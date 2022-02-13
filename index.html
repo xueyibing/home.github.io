@@ -15,14 +15,22 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/dmego/home.github.io/assets/css/iconfont.css">
     <link rel="apple-touch-icon" href="https://cdn.jsdelivr.net/gh/dmego/home.github.io/apple-touch-icon.png">
     <link rel="icon" href="https://cdn.jsdelivr.net/gh/dmego/home.github.io/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+
 </head>
 
 <body>
+
     <span class="mobile btn-mobile-menu">
         <i class="social iconfont icon-list btn-mobile-menu__icon"></i>
         <i class="social iconfont icon-angleup btn-mobile-close__icon hidden"></i>
     </span>
     <header id="panel" class="panel-cover">
+
+        <h1 id = 'tq' class="panel-title" style="font-size: 20px;color: rgb(255,255,255);" align="right">
+           天气
+        </h1>
         <div class="panel-main">
             <div class="panel-main__inner panel-inverted">
                 <div class="panel-main__content">
@@ -33,7 +41,7 @@
                                 <div class="info-back">
                                     <h2> 
                                         
-                                            努力
+                                            Lucky
                                         
                                     </h2>
                                     <p>
@@ -52,6 +60,8 @@
                     <br>
                     <h1 class="panel-title iUp">
                         <a href="#" title="Dmego Home">杨小荡（Ꮤ）</a>
+                        <span id="qrj"><span>情人节快乐</span><img width="30" height="35" src="/img/meigui.png" alt="img"></span>
+
                     </h1>
 <!--                    <p class="panel-cover__subtitle panel-subtitle iUp">美好的人生需要越来越美好的自己搭建</p>-->
                     <hr class="panel-cover__divider iUp" />
@@ -67,14 +77,15 @@
                                         <a href="/" class="blog-button">首页</a>
                                     </li>
                                     <li class="navigation__item">
-                                        <a href="/todo.html" class="blog-button">让工作轻松一些</a>
+                                        <a href="/todo.html" class="blog-button">效率工具</a>
                                     </li>
                                     <li class="navigation__item">
-                                        <a href="/todo.html" class="blog-button" >手记</a>
+                                        <a href="/todo.html" class="blog-button" >笔记</a>
                                     </li>
                                 </ul>
                             </nav>
                         </div>
+                        <br><br><br>
                         <div class="iUp">
                             <nav class="cover-navigation navigation--social">
                                 <ul class="navigation">
@@ -111,6 +122,7 @@
                 <a href="https://hitokoto.cn/" target="_blank"> Hitokoto </a>
             </p>
         </div>
+
     </header>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/dmego/home.github.io/assets/js/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/dmego/home.github.io/assets/js/fetch.min.js"></script>
@@ -121,10 +133,114 @@
 </html>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4L0GELWRT2"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" charset="utf-8"></script>
+<script src="http://ip.ws.1 26.net/ipquery"></script>
+<script type="text/javascript">
+    function dynamicIp(cityName){
+
+        $("#ctiyName").html(cityName);
+        var url = encodeURI("http://wthrcdn.etouch.cn/weather_mini?city="+cityName);
+        $.get({
+
+            url: url,
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                console.log(data)
+
+                var todayWeather = data.data.forecast[0];
+                $("#ganmao").html("穿衣指数:"+data.data.ganmao);//穿衣
+                var fengli = todayWeather.fengli;
+                $("#fengx").html("风向风力:"+todayWeather.fengxiang+fengli.substring(fengli.indexOf("T")+3,fengli.indexOf("T")+5));//风向
+                $("#heightwend").html("最"+todayWeather.high);//最高温
+                $("#low").html("最"+todayWeather.low);//最低温温
+                $("#wendu").html(data.data.wendu);//当前温度
+                var arr = todayWeather.date.split("日");
+                $("#date").html(arr[0]+"日<br>"+arr[1]);//当前日期
+                var type= todayWeather.type;//天气
+
+                document.getElementById('tq').innerText = '嘉兴：'+ type + '     '+todayWeather.low+ '~' +todayWeather.high;
+
+
+                $("#table_next").width($(".details").width()+86);
+
+            }
+        });
+
+    }
+    dynamicIp('嘉兴');//这是获取天气调用的方法 lc就是城市名称
+</script>
+
+
+<script type="text/javascript">
+    (function($){
+        $.fn.snow = function(options){
+            var $flake = $('<div id="snowbox" />').css({'position': 'absolute','z-index':'9999', 'top': '-50px'}).html('&#10052;'),
+                documentHeight 	= $(document).height(),
+                documentWidth	= $(document).width(),
+                defaults = {
+                    minSize		: 10,
+                    maxSize		: 20,
+                    newOn		: 1000,
+                    flakeColor	: "#AFDAEF" /* 此处可以定义雪花颜色，若要白色可以改为#FFFFFF */
+                },
+                options	= $.extend({}, defaults, options);
+            var interval= setInterval( function(){
+                var startPositionLeft = Math.random() * documentWidth - 100,
+                    startOpacity = 0.5 + Math.random(),
+                    sizeFlake = options.minSize + Math.random() * options.maxSize,
+                    endPositionTop = documentHeight - 200,
+                    endPositionLeft = startPositionLeft - 500 + Math.random() * 500,
+                    durationFall = documentHeight * 10 + Math.random() * 5000;
+                $flake.clone().appendTo('body').css({
+                    left: startPositionLeft,
+                    opacity: startOpacity,
+                    'font-size': sizeFlake,
+                    color: options.flakeColor
+                }).animate({
+                    top: endPositionTop,
+                    left: endPositionLeft,
+                    opacity: 0.2
+                },durationFall,'linear',function(){
+                    $(this).remove()
+                });
+            }, options.newOn);
+        };
+    })(jQuery);
+
+    $(function(){
+        let myDate = new Date();
+        console.log(myDate.getMonth(),myDate.getDate())
+        if(myDate.getMonth()+1 == 2 &&  myDate.getDate()==14){
+            $.fn.snow({
+                minSize: 5, /* 定义雪花最小尺寸 */
+                maxSize: 50,/* 定义雪花最大尺寸 */
+                newOn: 300  /* 定义密集程度，数字越小越密集 */
+            });
+        }
+
+
+    });
+</script>
+
+
+
 <script>
+
+
+
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
   gtag('config', 'G-4L0GELWRT2');
+  let myDate = new Date();
+  console.log(myDate.getMonth(),myDate.getDate())
+  if(myDate.getMonth()+1 == 2 &&  myDate.getDate()==14) {
+      document.getElementById('qrj').hidden = false;
+  }else {
+      document.getElementById('qrj').hidden = true;
+  }
+
+
 </script>
